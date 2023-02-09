@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import BGimage from "../assets/bgimage.png";
 import logo from "../assets/LOGO-02 3.png";
@@ -13,7 +14,9 @@ export const Main = () => {
         </Wrapper>
         <Login>
           <Wrapper>
-            <button>რეზიუმეს დამატება</button>
+            <Link to="/personalinfo">
+              <button>რეზიუმეს დამატება</button>
+            </Link>
             <img src={logo02} />
           </Wrapper>
         </Login>

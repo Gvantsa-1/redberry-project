@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Main } from "./components/Main";
+import { Personalinfo } from "./components/Personalinfo";
+import { Experience } from "./components/Experience";
 import {
   BrowserRouter as Router,
   Route,
@@ -15,6 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Main to="/main" replace />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/personalinfo" element={<Personalinfo />} />
+        <Route path="/experience" element={<Experience />} />
       </Routes>
     </Container>
   );
