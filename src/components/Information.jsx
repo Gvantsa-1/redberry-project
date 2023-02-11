@@ -4,7 +4,7 @@ import logo from "../assets/LOGO-12 1.png";
 import phone from "../assets/phone.png";
 import maillogo from "../assets/Vector.png";
 export const Information = (props) => {
-  const { image } = props;
+  const { image, name, lastname, number, mail, text } = props;
   return (
     <Container>
       <PersonalBox>
@@ -18,19 +18,30 @@ export const Information = (props) => {
               marginBottom: "17px",
             }}
           >
-            vxxc
+            {name} {lastname}
           </h1>
           <div style={{ display: "flex", marginBottom: "10px" }}>
-            <img src={maillogo} /> <h4>bxxb</h4>
+            {mail && <img src={maillogo} />} <h4>{mail}</h4>
           </div>
           <div style={{ display: "flex", marginBottom: "34px" }}>
-            <img src={phone} /> <h4>xbxcb</h4>
+            {number && <img src={phone} alt="phone" />}
+
+            <h4>{number}</h4>
           </div>
-          <h3>bxbx</h3>
-          <p>xbbx</p>
+          {text && <h3>ჩემს შესახებ</h3>}
+          <p>{text}</p>
         </Info>
         <Image>
-          <img src={image} />
+          {image && (
+            <img
+              style={{
+                width: "246px",
+                height: " 246px",
+                borderRadius: "133px",
+              }}
+              src={URL.createObjectURL(new Blob([image], { type: image.type }))}
+            />
+          )}
         </Image>
       </PersonalBox>
       <IMG src={logo} />
@@ -71,11 +82,8 @@ const Info = styled.div`
     font-size: 16px;
     line-height: 22px;
     font-weight: 400;
-    width: 432px;
+    width: 402px;
+    word-break: break-all;
   }
 `;
-const Image = styled.div`
-  width: 246px;
-  height: 246px;
-  border-radius: 133px;
-`;
+const Image = styled.div``;

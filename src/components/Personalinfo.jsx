@@ -1,36 +1,118 @@
-import React, { useState, useLocalStorage } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import arrow from "../assets/arrow.png";
+import InputMask from "react-input-mask";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { Information } from "../components/Information";
-
+import greenIcon from "../assets/yesicon.png";
+import error from "../assets/error.png";
 export const Personalinfo = (props) => {
   const {
     register,
     handleSubmit,
     control,
+    useController,
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
-    alert("hi");
-  };
+  const onSubmit = (item) => {};
   const [image, setImage] = useState(null);
+  const [name, setName] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [text, setText] = useState("");
+  const [mail, setMail] = useState("");
+  const [number, setNumber] = useState("");
+  const [about, setAbout] = useState("");
+  const [src, setSrc] = useState(null);
+  const MyInput = ({ control, name, mask, ...props }) => {
+    const [value, setValue] = useController(control, name);
+    return (
+      <InputMask
+        mask={mask}
+        value={value}
+        onChange={({ target }) => setValue(target.value)}
+        {...props}
+      />
+    );
+  };
+
+  // const regex = "/^[ა-ჰ]+$/";
+  const regex = "/^[\u10A0-\u10FF]{2,}$/";
+  const emailRegex = "/^[a-zA-Z0-9.]+@redberry.ge$/";
+  const numberRegex = "/^+995sd{3}sd{2}sd{2}sd{2}$/";
+
+  const handleNameChange = (event) => {
+    localStorage.setItem("name", event.target.value);
+    setName(event.target.value);
+  };
+  const handleLastnameChange = (event) => {
+    localStorage.setItem("lastname", event.target.value);
+    setLastname(event.target.value);
+  };
+
+  const handleTextarea = (event) => {
+    localStorage.setItem("text", event.target.value);
+    setText(event.target.value);
+  };
+  const handleMailChange = (event) => {
+    localStorage.setItem("mail", event.target.value);
+    setMail(event.target.value);
+  };
+  const handleNumberChange = (event) => {
+    localStorage.setItem("number", event.target.value);
+    setNumber(event.target.value);
+  };
 
   const handleImageChange = (event) => {
-    setImage(URL.createObjectURL(event.target.files[0]));
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      localStorage.setItem("image", reader.result);
+      setImage(file);
+    };
   };
+  useEffect(() => {
+    const storedName = localStorage.getItem("name");
+    if (storedName) {
+      setName(storedName);
+    }
+    const storedLastname = localStorage.getItem("lastname");
+    if (storedLastname) {
+      setLastname(storedLastname);
+    }
+    const storedText = localStorage.getItem("text");
+    if (storedText) {
+      setText(storedText);
+    }
+    const storedMail = localStorage.getItem("mail");
+    if (storedMail) {
+      setMail(storedMail);
+    }
+    const storedNumber = localStorage.getItem("number");
+    if (storedNumber) {
+      setNumber(storedNumber);
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedImage = localStorage.getItem("image");
+    if (storedImage) {
+      const file = new File([storedImage], "image.jpg", { type: "image/jpeg" });
+      setImage(file);
+    }
+  }, []);
 
   const navigate = useNavigate();
   const handleNavigate = () => {
     if (onSubmit) {
-      navigate("/experience");
-    } else {
-      alert("hi");
+      //   navigate("/experience");
+      // } else {
     }
   };
+
   return (
     <Container>
       <Link to="/main">
@@ -58,20 +140,38 @@ export const Personalinfo = (props) => {
               <InputWrapper>
                 <label htmlFor="name">სახელი</label>
                 <NameInput
-                  type="name"
+                  type="text"
+                  value={name}
+                  onChange={handleNameChange}
                   placeholder="ანზორ"
-                  {...register("name", { required: true })}
+                />
+                <img
+                  style={{ position: "absolute", left: "343px", top: "45px" }}
+                  src={greenIcon}
                 />
                 <span>მინიმუმ 2 ასო, ქართული ასოები</span>
+                <img
+                  style={{ position: "absolute", left: "380px", top: "45px" }}
+                  src={error}
+                />
               </InputWrapper>
               <InputWrapper>
                 <label htmlFor="lastname">გვარი</label>
                 <LastnameInput
+                  onChange={handleLastnameChange}
                   type="lastname"
+                  value={lastname}
                   placeholder="მუმლაძე"
-                  {...register("lastname", { required: true })}
+                />
+                <img
+                  style={{ position: "absolute", left: "343px", top: "45px" }}
+                  src={greenIcon}
                 />
                 <span>მინიმუმ 2 ასო, ქართული ასოები</span>
+                <img
+                  style={{ position: "absolute", left: "380px", top: "45px" }}
+                  src={error}
+                />
               </InputWrapper>
             </div>
             <ImageWrapper
@@ -90,38 +190,65 @@ export const Personalinfo = (props) => {
                 accept="image/*"
                 placeholder="ატვირთვა"
                 required
-              />
+              />{" "}
             </ImageWrapper>
+
             <Text>
               <label htmlFor="textarea">ჩემს შესახებ (არასავალდებულო)</label>
               <textarea
+                rows="4"
+                cols="5"
+                onChange={handleTextarea}
                 placeholder="ზოგადი ინფო შენ შესახებ"
-                style={{ width: "798px", height: "103px", marginTop: "8px" }}
+                style={{
+                  height: "103px",
+                  marginTop: "8px",
+                }}
                 id="message"
+                value={text}
                 name="message"
-                {...register("message", { required: true })}
               />
             </Text>
             <div style={{ display: "block" }}>
               <InputWrapper>
                 <label htmlFor="mail">ელ.ფოსტა</label>
                 <MailInput
+                  onChange={handleMailChange}
                   type="mail"
+                  value={mail}
                   placeholder="anzorr666@redberry.ge"
-                  {...register("email", { required: true })}
                   required
-                />{" "}
+                />
+                <img
+                  style={{ position: "absolute", left: "765px", top: "45px" }}
+                  src={greenIcon}
+                />
                 <span>უნდა მთავრდებოდეს @redberry.ge-ით</span>
+                <img
+                  style={{ position: "absolute", left: "815px", top: "45px" }}
+                  src={error}
+                />
               </InputWrapper>
               <InputWrapper style={{ marginTop: "29px" }}>
                 <label htmlFor="number">მობილურის ნომერი</label>
                 <NumberInput
+                  onChange={handleNumberChange}
+                  control={control}
+                  name="phone"
+                  mask="+995 *** ** ** **"
                   placeholder="+995 551 12 34 56"
-                  {...register("number", { required: true })}
-                />{" "}
+                />
+                <img
+                  style={{ position: "absolute", left: "765px", top: "45px" }}
+                  src={greenIcon}
+                />
                 <span>
                   უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს
                 </span>
+                <img
+                  style={{ position: "absolute", left: "815px", top: "45px" }}
+                  src={error}
+                />
               </InputWrapper>
             </div>
             <BTNcontainer>
@@ -146,7 +273,14 @@ export const Personalinfo = (props) => {
 
       <Box>
         {" "}
-        <Information image={image} />{" "}
+        <Information
+          image={image}
+          name={name}
+          lastname={lastname}
+          mail={mail}
+          number={number}
+          text={text}
+        />
       </Box>
     </Container>
   );
@@ -181,6 +315,8 @@ const Container = styled.div`
     border: 1px solid #bcbcbc;
     border-radius: 4px;
     padding: 16px 13px;
+    width: 798px !important;
+    box-sizing: border-box;
   }
 `;
 const Personal = styled.div`
@@ -219,12 +355,17 @@ const FormContainer = styled.div`
 `;
 const InputWrapper = styled.div`
   display: block;
+  position: relative;
 `;
 const NameInput = styled.input`
   border: #bcbcbc;
   width: 371px;
   height: 48px;
   margin-right: 50px;
+  /* background-image: url(${greenIcon});
+  background-repeat: no-repeat;
+
+  background-position: 340px; */
 `;
 const IMGinput = styled.input`
   background-color: #0e80bf !important;
@@ -233,6 +374,7 @@ const IMGinput = styled.input`
   font-size: 14px;
   color: #ffffff;
   font-weight: 400;
+
   &::-webkit-file-upload-button {
     visibility: hidden;
   }
@@ -251,7 +393,7 @@ const MailInput = styled.input`
   width: 798px;
   height: 48px;
 `;
-const NumberInput = styled.input`
+const NumberInput = styled(InputMask)`
   border: #bcbcbc;
   width: 798px;
   height: 48px;
@@ -276,11 +418,3 @@ const BTNcontainer = styled.div`
     font-size: 16px;
   }
 `;
-// const codeRegex = "[0-9]{4}";
-
-//   function handleCode(event) {
-//     event.target.value === "" ? setShow(false) : setShow(true);
-//     event.target.value.match(codeRegex)
-//       ? handleNavigate() && setShow(true)
-//       : setShow(false);
-//   }
