@@ -1,17 +1,36 @@
-import React, { useRef } from "react";
+import React, { useState, useLocalStorage } from "react";
 import styled from "styled-components";
 import arrow from "../assets/arrow.png";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { Information } from "../components/Information";
-export const Personalinfo = () => {
+
+export const Personalinfo = (props) => {
   const {
     register,
     handleSubmit,
+    control,
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    alert("hi");
+  };
+  const [image, setImage] = useState(null);
+
+  const handleImageChange = (event) => {
+    setImage(URL.createObjectURL(event.target.files[0]));
+  };
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    if (onSubmit) {
+      navigate("/experience");
+    } else {
+      alert("hi");
+    }
+  };
   return (
     <Container>
       <Link to="/main">
@@ -28,7 +47,7 @@ export const Personalinfo = () => {
           <Line />
         </Wrapper>
         <FormContainer>
-          <form onSubmit={handleSubmit(onSubmit)} method="post">
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div
               style={{
                 display: "flex",
@@ -55,15 +74,22 @@ export const Personalinfo = () => {
                 <span>მინიმუმ 2 ასო, ქართული ასოები</span>
               </InputWrapper>
             </div>
-            <ImageWrapper>
-              <label htmlFor="image">პირადი ფოტოს ატვირთვა</label>
+            <ImageWrapper
+              style={{
+                display: "flex",
+                marginBottom: "20px",
+                alignItems: "baseline",
+              }}
+            >
+              <label style={{ marginRight: "19px" }} htmlFor="image">
+                პირადი ფოტოს ატვირთვა
+              </label>
               <IMGinput
+                type="file"
+                onChange={handleImageChange}
+                accept="image/*"
                 placeholder="ატვირთვა"
-                style={{
-                  border: "none",
-                  boxShadow: "none",
-                  marginLeft: "19px",
-                }}
+                required
               />
             </ImageWrapper>
             <Text>
@@ -73,6 +99,7 @@ export const Personalinfo = () => {
                 style={{ width: "798px", height: "103px", marginTop: "8px" }}
                 id="message"
                 name="message"
+                {...register("message", { required: true })}
               />
             </Text>
             <div style={{ display: "block" }}>
@@ -82,6 +109,7 @@ export const Personalinfo = () => {
                   type="mail"
                   placeholder="anzorr666@redberry.ge"
                   {...register("email", { required: true })}
+                  required
                 />{" "}
                 <span>უნდა მთავრდებოდეს @redberry.ge-ით</span>
               </InputWrapper>
@@ -97,25 +125,28 @@ export const Personalinfo = () => {
               </InputWrapper>
             </div>
             <BTNcontainer>
-              <Link to="/experience">
-                <button
-                  style={{
-                    border: "none",
-                    boxShadow: "none",
-                    borderRadius: "4px",
-                    marginTop: "174px",
-                  }}
-                  type="submit"
-                >
-                  შემდეგი
-                </button>
-              </Link>
+              {/* <Link to="/experience"> */}
+              <button
+                onClick={handleNavigate}
+                type="submit"
+                style={{
+                  border: "none",
+                  boxShadow: "none",
+                  borderRadius: "4px",
+                  marginTop: "174px",
+                }}
+              >
+                შემდეგი
+              </button>
+              {/* </Link> */}
             </BTNcontainer>
           </form>
         </FormContainer>
       </Personal>
+
       <Box>
-        <Information />
+        {" "}
+        <Information image={image} />{" "}
       </Box>
     </Container>
   );
@@ -136,13 +167,9 @@ const Container = styled.div`
     background-color: #ffffff;
     border: 1px solid #bcbcbc;
     border-radius: 4px;
+    padding-left: 16px;
     input:focus {
       outline: none;
-    }
-
-    &::placeholder {
-      padding: 13px 16px;
-      color: grey;
     }
   }
   span {
@@ -153,10 +180,7 @@ const Container = styled.div`
   textarea {
     border: 1px solid #bcbcbc;
     border-radius: 4px;
-    &::placeholder {
-      padding: 13px 16px;
-      color: grey;
-    }
+    padding: 16px 13px;
   }
 `;
 const Personal = styled.div`
@@ -202,7 +226,21 @@ const NameInput = styled.input`
   height: 48px;
   margin-right: 50px;
 `;
+const IMGinput = styled.input`
+  background-color: #0e80bf !important;
+  width: 107px;
+  height: 27px;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 400;
+  &::-webkit-file-upload-button {
+    visibility: hidden;
+  }
 
+  &::before {
+    content: "ატვირთვა";
+  }
+`;
 const LastnameInput = styled.input`
   border: #bcbcbc;
   width: 371px;
@@ -219,22 +257,12 @@ const NumberInput = styled.input`
   height: 48px;
 `;
 const ImageWrapper = styled.div`
-  margin-bottom: 54px;
+  margin-bottom: 154px;
 `;
-const IMGinput = styled.input`
-  background-color: #0e80bf !important;
-  width: 107px;
-  height: 27px;
-  margin-left: 19px;
 
-  &::placeholder {
-    color: #f1eeee !important;
-    font-weight: 400 !important;
-    font-size: 14px !important;
-  }
-`;
 const Text = styled.div`
   margin-bottom: 33px;
+  margin-top: 54px;
 `;
 const BTNcontainer = styled.div`
   display: flex;
