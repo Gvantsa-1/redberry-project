@@ -32,7 +32,6 @@ export const Information = (props) => {
           <p>{text}</p>
         </Info>
         <Image>
-          {/* {image && ( */}
           <img
             style={{
               width: "246px",
@@ -41,7 +40,6 @@ export const Information = (props) => {
             }}
             src={image}
           />
-          {/* )} */}
         </Image>
       </PersonalBox>
       <IMG src={logo} />

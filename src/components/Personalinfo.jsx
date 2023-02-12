@@ -17,18 +17,25 @@ export const Personalinfo = (props) => {
     watch,
     formState: { errors },
   } = useForm();
+  const {
+    setImage,
+    setName,
+    setNumber,
+    setText,
+    setMail,
+    setLastname,
+    text,
+    mail,
+    name,
+    lastname,
+    image,
+    number,
+  } = props;
   const [validName, setValidName] = useState(false);
   const [validlast, setValidlast] = useState(false);
   const [validNumber, setValidNumber] = useState(false);
   const [validMail, setValidMail] = useState(false);
-  const onSubmit = (item) => {};
-  const [image, setImage] = useState(null);
-  const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [text, setText] = useState("");
-  const [mail, setMail] = useState("");
-  const [number, setNumber] = useState("");
-  const [about, setAbout] = useState("");
+  const [completed, setCompleted] = useState(false);
 
   const MyInput = ({ control, name, mask, ...props }) => {
     const [value, setValue] = useController(control, name);
@@ -87,7 +94,32 @@ export const Personalinfo = (props) => {
       localStorage.setItem("image", reader.result);
       setImage(file);
     };
+    {
+      setImage(file) && setCompleted(true);
+    }
   };
+  useEffect(() => {
+    const storedName = localStorage.getItem("name");
+    const storedLastname = localStorage.getItem("lastname");
+    const storedText = localStorage.getItem("text");
+    const storedMail = localStorage.getItem("mail");
+    const storedNumber = localStorage.getItem("number");
+    const storedImage = localStorage.getItem("image");
+
+    setName(storedName || "");
+    setLastname(storedLastname || "");
+    setText(storedText || "");
+    setMail(storedMail || "");
+    setNumber(storedNumber || "");
+    setImage(storedImage || null);
+
+    storedName.match(regex) ? setValidName(true) : setValidName(false);
+    storedLastname.match(regexLast) ? setValidlast(true) : setValidlast(false);
+    storedMail.match(mailRegex) ? setValidMail(true) : setValidMail(false);
+    storedNumber.match(numberRegex)
+      ? setValidNumber(true)
+      : setValidNumber(false);
+  }, []);
   useEffect(() => {
     const storedName = localStorage.getItem("name");
     if (storedName) {
@@ -117,13 +149,14 @@ export const Personalinfo = (props) => {
   }, []);
 
   const navigate = useNavigate();
-  const handleNavigate = () => {
-    if (onSubmit) {
-      //   navigate("/experience");
-      // } else {
+
+  const onSubmit = () => {
+    {
+      validName && validNumber && validMail && validlast && image
+        ? navigate("/experience")
+        : alert("Something Empty or is not Valid");
     }
   };
-
   return (
     <Container>
       <Link to="/main">
@@ -149,8 +182,20 @@ export const Personalinfo = (props) => {
               }}
             >
               <InputWrapper>
-                <label htmlFor="name">სახელი</label>
+                <label
+                  style={
+                    validName ? { color: "#000000" } : { color: "#E52F2F" }
+                  }
+                  htmlFor="name"
+                >
+                  სახელი
+                </label>
                 <NameInput
+                  style={
+                    validName
+                      ? { border: "1px solid #98E37E" }
+                      : { border: "1px solid #EF5050" }
+                  }
                   type="text"
                   value={name}
                   onChange={handleNameChange}
@@ -171,8 +216,20 @@ export const Personalinfo = (props) => {
                 <span>მინიმუმ 2 ასო, ქართული ასოები</span>
               </InputWrapper>
               <InputWrapper>
-                <label htmlFor="lastname">გვარი</label>
+                <label
+                  style={
+                    validlast ? { color: "#000000" } : { color: "#E52F2F" }
+                  }
+                  htmlFor="lastname"
+                >
+                  გვარი
+                </label>
                 <LastnameInput
+                  style={
+                    validlast
+                      ? { border: "1px solid #98E37E" }
+                      : { border: "1px solid #EF5050" }
+                  }
                   onChange={handleLastnameChange}
                   type="lastname"
                   value={lastname}
@@ -207,15 +264,12 @@ export const Personalinfo = (props) => {
                 onChange={handleImageChange}
                 accept="image/*"
                 placeholder="ატვირთვა"
-                required
               />{" "}
             </ImageWrapper>
 
             <Text>
               <label htmlFor="textarea">ჩემს შესახებ (არასავალდებულო)</label>
               <textarea
-                rows="4"
-                cols="5"
                 onChange={handleTextarea}
                 placeholder="ზოგადი ინფო შენ შესახებ"
                 style={{
@@ -229,8 +283,20 @@ export const Personalinfo = (props) => {
             </Text>
             <div style={{ display: "block" }}>
               <InputWrapper>
-                <label htmlFor="mail">ელ.ფოსტა</label>
+                <label
+                  style={
+                    validMail ? { color: "#000000" } : { color: "#E52F2F" }
+                  }
+                  htmlFor="mail"
+                >
+                  ელ.ფოსტა
+                </label>
                 <MailInput
+                  style={
+                    validMail
+                      ? { border: "1px solid #98E37E" }
+                      : { border: "1px solid #EF5050" }
+                  }
                   onChange={handleMailChange}
                   type="mail"
                   value={mail}
@@ -252,8 +318,20 @@ export const Personalinfo = (props) => {
                 <span>უნდა მთავრდებოდეს @redberry.ge-ით</span>
               </InputWrapper>
               <InputWrapper style={{ marginTop: "29px" }}>
-                <label htmlFor="number">მობილურის ნომერი</label>
+                <label
+                  style={
+                    validNumber ? { color: "#000000" } : { color: "#E52F2F" }
+                  }
+                  htmlFor="number"
+                >
+                  მობილურის ნომერი
+                </label>
                 <NumberInput
+                  style={
+                    validNumber
+                      ? { border: "1px solid #98E37E" }
+                      : { border: "1px solid #EF5050" }
+                  }
                   onChange={handleNumberChange}
                   control={control}
                   name="phone"
@@ -277,9 +355,7 @@ export const Personalinfo = (props) => {
               </InputWrapper>
             </div>
             <BTNcontainer>
-              {/* <Link to="/experience"> */}
               <button
-                onClick={handleNavigate}
                 type="submit"
                 style={{
                   border: "none",
@@ -290,7 +366,6 @@ export const Personalinfo = (props) => {
               >
                 შემდეგი
               </button>
-              {/* </Link> */}
             </BTNcontainer>
           </form>
         </FormContainer>
@@ -301,10 +376,10 @@ export const Personalinfo = (props) => {
         <Information
           image={image}
           name={name}
+          text={text}
           lastname={lastname}
           mail={mail}
           number={number}
-          text={text}
         />
       </Box>
     </Container>
@@ -387,10 +462,6 @@ const NameInput = styled.input`
   width: 371px;
   height: 48px;
   margin-right: 50px;
-  /* background-image: url(${greenIcon});
-  background-repeat: no-repeat;
-
-  background-position: 340px; */
 `;
 const IMGinput = styled.input`
   background-color: #0e80bf !important;
