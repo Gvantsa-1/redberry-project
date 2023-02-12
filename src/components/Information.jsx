@@ -32,16 +32,16 @@ export const Information = (props) => {
           <p>{text}</p>
         </Info>
         <Image>
-          {image && (
-            <img
-              style={{
-                width: "246px",
-                height: " 246px",
-                borderRadius: "133px",
-              }}
-              src={URL.createObjectURL(new Blob([image], { type: image.type }))}
-            />
-          )}
+          {/* {image && ( */}
+          <img
+            style={{
+              width: "246px",
+              height: " 246px",
+              borderRadius: "133px",
+            }}
+            src={image}
+          />
+          {/* )} */}
         </Image>
       </PersonalBox>
       <IMG src={logo} />

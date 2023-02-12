@@ -17,6 +17,10 @@ export const Personalinfo = (props) => {
     watch,
     formState: { errors },
   } = useForm();
+  const [validName, setValidName] = useState(false);
+  const [validlast, setValidlast] = useState(false);
+  const [validNumber, setValidNumber] = useState(false);
+  const [validMail, setValidMail] = useState(false);
   const onSubmit = (item) => {};
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
@@ -25,7 +29,7 @@ export const Personalinfo = (props) => {
   const [mail, setMail] = useState("");
   const [number, setNumber] = useState("");
   const [about, setAbout] = useState("");
-  const [src, setSrc] = useState(null);
+
   const MyInput = ({ control, name, mask, ...props }) => {
     const [value, setValue] = useController(control, name);
     return (
@@ -38,18 +42,22 @@ export const Personalinfo = (props) => {
     );
   };
 
-  // const regex = "/^[ა-ჰ]+$/";
-  const regex = "/^[\u10A0-\u10FF]{2,}$/";
-  const emailRegex = "/^[a-zA-Z0-9.]+@redberry.ge$/";
-  const numberRegex = "/^+995sd{3}sd{2}sd{2}sd{2}$/";
+  const regex = /^[ა-ჰ]{2,}$/;
+  const regexLast = /^[ა-ჰ]{2,}$/;
+  const mailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(redberry\.ge)$/;
+  const numberRegex = "995[1-9 ]{13}";
 
   const handleNameChange = (event) => {
     localStorage.setItem("name", event.target.value);
     setName(event.target.value);
+    event.target.value.match(regex) ? setValidName(true) : setValidName(false);
   };
   const handleLastnameChange = (event) => {
     localStorage.setItem("lastname", event.target.value);
     setLastname(event.target.value);
+    event.target.value.match(regexLast)
+      ? setValidlast(true)
+      : setValidlast(false);
   };
 
   const handleTextarea = (event) => {
@@ -59,10 +67,16 @@ export const Personalinfo = (props) => {
   const handleMailChange = (event) => {
     localStorage.setItem("mail", event.target.value);
     setMail(event.target.value);
+    event.target.value.match(mailRegex)
+      ? setValidMail(true)
+      : setValidMail(false);
   };
   const handleNumberChange = (event) => {
     localStorage.setItem("number", event.target.value);
     setNumber(event.target.value);
+    event.target.value.match(numberRegex)
+      ? setValidNumber(true)
+      : setValidNumber(false);
   };
 
   const handleImageChange = (event) => {
@@ -99,10 +113,7 @@ export const Personalinfo = (props) => {
 
   useEffect(() => {
     const storedImage = localStorage.getItem("image");
-    if (storedImage) {
-      const file = new File([storedImage], "image.jpg", { type: "image/jpeg" });
-      setImage(file);
-    }
+    setImage(storedImage);
   }, []);
 
   const navigate = useNavigate();
@@ -145,15 +156,19 @@ export const Personalinfo = (props) => {
                   onChange={handleNameChange}
                   placeholder="ანზორ"
                 />
-                <img
-                  style={{ position: "absolute", left: "343px", top: "45px" }}
-                  src={greenIcon}
-                />
+
+                {validName ? (
+                  <img
+                    style={{ position: "absolute", left: "343px", top: "45px" }}
+                    src={greenIcon}
+                  />
+                ) : (
+                  <img
+                    style={{ position: "absolute", left: "380px", top: "45px" }}
+                    src={error}
+                  />
+                )}
                 <span>მინიმუმ 2 ასო, ქართული ასოები</span>
-                <img
-                  style={{ position: "absolute", left: "380px", top: "45px" }}
-                  src={error}
-                />
               </InputWrapper>
               <InputWrapper>
                 <label htmlFor="lastname">გვარი</label>
@@ -163,15 +178,18 @@ export const Personalinfo = (props) => {
                   value={lastname}
                   placeholder="მუმლაძე"
                 />
-                <img
-                  style={{ position: "absolute", left: "343px", top: "45px" }}
-                  src={greenIcon}
-                />
+                {validlast ? (
+                  <img
+                    style={{ position: "absolute", left: "343px", top: "45px" }}
+                    src={greenIcon}
+                  />
+                ) : (
+                  <img
+                    style={{ position: "absolute", left: "380px", top: "45px" }}
+                    src={error}
+                  />
+                )}
                 <span>მინიმუმ 2 ასო, ქართული ასოები</span>
-                <img
-                  style={{ position: "absolute", left: "380px", top: "45px" }}
-                  src={error}
-                />
               </InputWrapper>
             </div>
             <ImageWrapper
@@ -219,15 +237,19 @@ export const Personalinfo = (props) => {
                   placeholder="anzorr666@redberry.ge"
                   required
                 />
-                <img
-                  style={{ position: "absolute", left: "765px", top: "45px" }}
-                  src={greenIcon}
-                />
+
+                {validMail ? (
+                  <img
+                    style={{ position: "absolute", left: "765px", top: "45px" }}
+                    src={greenIcon}
+                  />
+                ) : (
+                  <img
+                    style={{ position: "absolute", left: "815px", top: "45px" }}
+                    src={error}
+                  />
+                )}
                 <span>უნდა მთავრდებოდეს @redberry.ge-ით</span>
-                <img
-                  style={{ position: "absolute", left: "815px", top: "45px" }}
-                  src={error}
-                />
               </InputWrapper>
               <InputWrapper style={{ marginTop: "29px" }}>
                 <label htmlFor="number">მობილურის ნომერი</label>
@@ -235,20 +257,23 @@ export const Personalinfo = (props) => {
                   onChange={handleNumberChange}
                   control={control}
                   name="phone"
-                  mask="+995 *** ** ** **"
+                  mask="+999 999 99 99 99"
                   placeholder="+995 551 12 34 56"
                 />
-                <img
-                  style={{ position: "absolute", left: "765px", top: "45px" }}
-                  src={greenIcon}
-                />
+                {validNumber ? (
+                  <img
+                    style={{ position: "absolute", left: "765px", top: "45px" }}
+                    src={greenIcon}
+                  />
+                ) : (
+                  <img
+                    style={{ position: "absolute", left: "815px", top: "45px" }}
+                    src={error}
+                  />
+                )}
                 <span>
                   უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს
                 </span>
-                <img
-                  style={{ position: "absolute", left: "815px", top: "45px" }}
-                  src={error}
-                />
               </InputWrapper>
             </div>
             <BTNcontainer>
