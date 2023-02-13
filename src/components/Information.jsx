@@ -62,7 +62,7 @@ export const Information = (props) => {
       <WorkExperience>
         {position && <h3>გამოცდილება</h3>}
         <div style={{ display: "flex" }}>
-          <h4>{position},</h4>&nbsp;
+          <h4>{position}</h4>&nbsp;
           <h4>{employer}</h4>
         </div>
 
@@ -86,7 +86,7 @@ export const Information = (props) => {
       <Edu>
         {university && <h3>განათლება</h3>}
         <div style={{ display: "flex" }}>
-          <h4>{university},</h4>&nbsp;
+          <h4>{university}</h4>&nbsp;
           <h4>{select}</h4>
         </div>
 
