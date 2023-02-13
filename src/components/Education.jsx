@@ -103,55 +103,50 @@ export const Education = (props) => {
   const navigate = useNavigate();
   const onSubmit = () => {
     {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("surname", lastname);
-      formData.append("email", mail);
-      formData.append("position", position);
-      formData.append("description", text);
-      formData.append("description", aboutEdu);
-      formData.append("educations[0]['institute']", university);
-      formData.append("educations[0]['degree_id']", 1);
-      formData.append("educations[0]['start_date']", startDate);
-      formData.append("educations[0]['due_date']", endSchool);
-      formData.append("educations[0]['description']", about);
-
-      console.log(image);
-
-      const bin = atob(image.replace(/^.*,/, "") || "");
-      const buffer = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) {
-        buffer[i] = bin.charCodeAt(i);
-      }
-      const ib = new Blob([buffer.buffer], { type: "image/png" });
-
-      formData.append("image", ib);
-
-      // formData.append("experiences[]", {
-      //   position: position,
-      //   employer: employer,
-      //   start_date: startDate,
-      //   due_date: endDate,
-      //   description: aboutEdu,
-      // });
-
-      // validUniversity && validAboutEdu && validEndSchool && validSelect
-      axios
-        .post("https://resume.redberryinternship.ge/api/cvs", formData, {
-          headers: {
-            "content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          // navigate("/Success");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      validUniversity &&
+        validAboutEdu &&
+        validEndSchool &&
+        validSelect &&
+        navigate("/Success");
     }
-  };
 
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("surname", lastname);
+    formData.append("email", mail);
+    formData.append("position", position);
+    formData.append("description", text);
+    formData.append("description", aboutEdu);
+    formData.append("educations[0]['institute']", university);
+    formData.append("educations[0]['degree_id']", 1);
+    formData.append("educations[0]['start_date']", startDate);
+    formData.append("educations[0]['due_date']", endSchool);
+    formData.append("educations[0]['description']", about);
+
+    console.log(image);
+
+    const bin = atob(image.replace(/^.*,/, "") || "");
+    const buffer = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) {
+      buffer[i] = bin.charCodeAt(i);
+    }
+    const ib = new Blob([buffer.buffer], { type: "image/png" });
+
+    formData.append("image", ib);
+
+    axios
+      .post("https://resume.redberryinternship.ge/api/cvs", formData, {
+        headers: {
+          "content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <Container>
       <Link to="/main">
