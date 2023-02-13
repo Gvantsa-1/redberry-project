@@ -4,6 +4,7 @@ import { Main } from "./components/Main";
 import { Personalinfo } from "./components/Personalinfo";
 import { Experience } from "./components/Experience";
 import { Information } from "./components/Information";
+import { Education } from "./components/Education";
 import {
   BrowserRouter as Router,
   Route,
@@ -58,6 +59,11 @@ function App() {
               lastname={lastname}
               mail={mail}
               number={number}
+              position={position}
+              startDate={startDate}
+              endDate={endDate}
+              employer={employer}
+              about={about}
             />
           }
         />
@@ -65,6 +71,29 @@ function App() {
           path="/experience"
           element={
             <Experience
+              image={image}
+              name={name}
+              text={text}
+              lastname={lastname}
+              mail={mail}
+              number={number}
+              setPosition={setPosition}
+              position={position}
+              employer={employer}
+              setEmployer={setEmployer}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              about={about}
+              setAbout={setAbout}
+            />
+          }
+        />
+        <Route
+          path="/education"
+          element={
+            <Education
               image={image}
               name={name}
               text={text}

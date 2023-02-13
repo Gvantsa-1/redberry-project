@@ -4,7 +4,19 @@ import logo from "../assets/LOGO-12 1.png";
 import phone from "../assets/phone.png";
 import maillogo from "../assets/Vector.png";
 export const Information = (props) => {
-  const { image, name, lastname, number, mail, text } = props;
+  const {
+    image,
+    name,
+    lastname,
+    number,
+    mail,
+    text,
+    position,
+    employer,
+    about,
+    startDate,
+    endDate,
+  } = props;
   return (
     <Container>
       <PersonalBox>
@@ -42,6 +54,31 @@ export const Information = (props) => {
           />
         </Image>
       </PersonalBox>
+      <div style={{ position: "relative" }}>{position && <Line />}</div>
+      <WorkExperience>
+        {position && <h3>გამოცდილება</h3>}
+        <div style={{ display: "flex" }}>
+          <h4>{position}</h4>&nbsp;
+          <h4>{employer}</h4>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            marginTop: "7px",
+            marginBottom: "16px",
+            color: "#909090",
+            fontStyle: "italic",
+          }}
+        >
+          <p>{startDate}</p>&nbsp;
+          <p>{endDate}</p>
+        </div>
+        <p>{about}</p>
+      </WorkExperience>
+      <div style={{ position: "relative" }}>
+        {position && <Line style={{ top: "40px" }} />}
+      </div>
       <IMG src={logo} />
     </Container>
   );
@@ -83,5 +120,23 @@ const Info = styled.div`
     width: 402px;
     word-break: break-all;
   }
+`;
+const WorkExperience = styled.div`
+  margin-top: 60px;
+  h3 {
+    color: #f93b1d;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21.98px;
+    margin-bottom: 15px;
+  }
+`;
+const Line = styled.div`
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  height: 2px;
+  top: 40px;
+  background-color: #1a1a1a41;
 `;
 const Image = styled.div``;

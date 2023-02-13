@@ -40,14 +40,7 @@ export const Experience = (props) => {
   const [validEnd, setValidEnd] = useState(false);
   const [validAbout, setValidAbout] = useState(false);
 
-  const onSubmit = () => {
-    // {
-    //   validName && validNumber && validMail && validlast && image
-    //     ? navigate("/experience")
-    //     : alert("Something Empty or is not Valid");
-    // }
-  };
-  const regex = /^[ა-ჰ]{2,}$/;
+  const regex = /^[ა-ჰ\s]{2,}$/;
 
   const handlePosition = (event) => {
     localStorage.setItem("position", event.target.value);
@@ -107,6 +100,27 @@ export const Experience = (props) => {
     storedStartDate !== "" ? setValidStart(true) : setValidStart(false);
     storedEndDate !== "" ? setValidEnd(true) : setValidEnd(false);
   }, []);
+
+  useEffect(() => {
+    const storedPosition = localStorage.getItem("position");
+    const storedEmployer = localStorage.getItem("employer");
+    const storedAbout = localStorage.getItem("about");
+    const storedStartDate = localStorage.getItem("startDate");
+    const storedEndDate = localStorage.getItem("endDate");
+
+    setPosition(storedPosition || "");
+    setEmployer(storedEmployer || "");
+    setAbout(storedAbout || "");
+    setStartDate(storedStartDate || "");
+    setEndDate(storedEndDate || "");
+
+    setValidPosition(storedPosition.match(regex) !== null);
+    setValidEmployer(storedEmployer.match(regex) !== null);
+    setValidStart(storedStartDate !== "");
+    setValidEnd(storedEndDate !== "");
+    setValidAbout(storedAbout !== "");
+  }, []);
+
   useEffect(() => {
     const storedPosition = localStorage.getItem("position");
     if (storedPosition) {
@@ -124,14 +138,20 @@ export const Experience = (props) => {
     if (storedEndDate) {
       setEndDate(storedEndDate);
     }
-    const storedAbout = localStorage.getItem("About");
+    const storedAbout = localStorage.getItem("about");
     if (storedAbout) {
       setAbout(storedAbout);
     }
   }, []);
 
   const navigate = useNavigate();
-
+  const onSubmit = () => {
+    {
+      validPosition && validEmployer && validAbout && validStart && validEnd
+        ? navigate("/education")
+        : alert("Something Empty or is not Valid");
+    }
+  };
   return (
     <Container>
       <Link to="/main">
@@ -351,6 +371,11 @@ export const Experience = (props) => {
           lastname={lastname}
           mail={mail}
           number={number}
+          position={position}
+          startDate={startDate}
+          endDate={endDate}
+          employer={employer}
+          about={about}
         />
       </Box>
     </Container>
@@ -446,6 +471,7 @@ const DateStartInput = styled.input`
   height: 48px;
   margin-right: 50px;
   padding: 0 20px;
+  font-size: 16px;
 `;
 const DateEndInput = styled.input`
   border: #bcbcbc;
@@ -453,6 +479,7 @@ const DateEndInput = styled.input`
   height: 48px;
   margin-right: 50px;
   padding: 0 20px;
+  font-size: 16px;
 `;
 const PositionInput = styled.input`
   border: #bcbcbc;

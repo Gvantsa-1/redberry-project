@@ -30,6 +30,11 @@ export const Personalinfo = (props) => {
     lastname,
     image,
     number,
+    position,
+    employer,
+    about,
+    startDate,
+    endDate,
   } = props;
   const [validName, setValidName] = useState(false);
   const [validlast, setValidlast] = useState(false);
