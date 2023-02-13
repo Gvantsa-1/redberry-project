@@ -16,6 +16,10 @@ export const Information = (props) => {
     about,
     startDate,
     endDate,
+    university,
+    select,
+    endSchool,
+    aboutEdu,
   } = props;
   return (
     <Container>
@@ -58,7 +62,7 @@ export const Information = (props) => {
       <WorkExperience>
         {position && <h3>გამოცდილება</h3>}
         <div style={{ display: "flex" }}>
-          <h4>{position}</h4>&nbsp;
+          <h4>{position},</h4>&nbsp;
           <h4>{employer}</h4>
         </div>
 
@@ -76,6 +80,29 @@ export const Information = (props) => {
         </div>
         <p>{about}</p>
       </WorkExperience>
+      <div style={{ position: "relative" }}>
+        {university && <Line style={{ top: "40px" }} />}
+      </div>
+      <Edu>
+        {university && <h3>განათლება</h3>}
+        <div style={{ display: "flex" }}>
+          <h4>{university},</h4>&nbsp;
+          <h4>{select}</h4>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            marginTop: "7px",
+            marginBottom: "16px",
+            color: "#909090",
+            fontStyle: "italic",
+          }}
+        >
+          <p>{endSchool}</p>
+        </div>
+        <p>{aboutEdu}</p>
+      </Edu>
       <div style={{ position: "relative" }}>
         {position && <Line style={{ top: "40px" }} />}
       </div>
@@ -140,3 +167,13 @@ const Line = styled.div`
   background-color: #1a1a1a41;
 `;
 const Image = styled.div``;
+const Edu = styled.div`
+  margin-top: 60px;
+  h3 {
+    color: #f93b1d;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21.98px;
+    margin-bottom: 15px;
+  }
+`;

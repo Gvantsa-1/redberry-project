@@ -30,11 +30,6 @@ export const Personalinfo = (props) => {
     lastname,
     image,
     number,
-    position,
-    employer,
-    about,
-    startDate,
-    endDate,
   } = props;
   const [validName, setValidName] = useState(false);
   const [validlast, setValidlast] = useState(false);
@@ -57,7 +52,7 @@ export const Personalinfo = (props) => {
   const regex = /^[ა-ჰ]{2,}$/;
   const regexLast = /^[ა-ჰ]{2,}$/;
   const mailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(redberry\.ge)$/;
-  const numberRegex = "995[1-9 ]{13}";
+  const numberRegex = "995[0-9 ]{13}";
 
   const handleNameChange = (event) => {
     localStorage.setItem("name", event.target.value);

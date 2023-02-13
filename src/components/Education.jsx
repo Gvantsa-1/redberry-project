@@ -25,11 +25,16 @@ export const Education = (props) => {
     about,
     startDate,
     endDate,
+    university,
+    setUniversity,
+    select,
+    setSelect,
+    setEndDateSchool,
+    endSchool,
+    aboutEdu,
+    setAboutEdu,
   } = props;
-  const [university, setUniversity] = useState("");
-  const [select, setSelect] = useState("");
-  const [endSchool, setEndDateSchool] = useState("");
-  const [aboutEdu, setAboutEdu] = useState("");
+
   const [validUniversity, setValidUniversity] = useState(false);
   const [validSelect, setValidSelect] = useState(false);
   const [validEndSchool, setValidEndSchool] = useState(false);
@@ -52,7 +57,10 @@ export const Education = (props) => {
   };
   const handleSelect = (event) => {
     localStorage.setItem("select", event.target.value);
-    setSelect(event.target.value);
+    setValidSelect(event.target.value);
+    event.target.value !== select
+      ? setValidSelect(true)
+      : setValidSelect(false);
   };
 
   const handleAboutEdu = (event) => {
@@ -62,6 +70,24 @@ export const Education = (props) => {
       ? setValidAboutEdu(true)
       : setValidAboutEdu(false);
   };
+
+  useEffect(() => {
+    const storedUniversity = localStorage.getItem("university");
+    const storedSelect = localStorage.getItem("select");
+    const storedEndSchool = localStorage.getItem("endSchool");
+    const storedAboutEdu = localStorage.getItem("aboutEdu");
+
+    setUniversity(storedUniversity || "");
+    setSelect(storedSelect || "");
+    setAboutEdu(storedAboutEdu || "");
+    setEndDateSchool(storedEndSchool || "");
+
+    setValidUniversity(storedUniversity.match(regex) !== null);
+    setValidSelect(storedSelect.match(regex) !== null);
+    setValidEndSchool(storedEndSchool !== "");
+    setValidAboutEdu(storedAboutEdu !== "");
+  }, []);
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -73,12 +99,13 @@ export const Education = (props) => {
   }, []);
   console.log("data", data);
 
+  const navigate = useNavigate();
   const onSubmit = () => {
-    // {
-    //   validPosition && validEmployer && validAbout && validStart && validEnd
-    //     ? navigate("/education")
-    //     : alert("Something Empty or is not Valid");
-    // }
+    {
+      validUniversity && validAboutEdu && validEndSchool && validSelect
+        ? navigate("/Success")
+        : alert("Something Empty or is not Valid");
+    }
   };
   return (
     <Container>
@@ -279,6 +306,10 @@ export const Education = (props) => {
           endDate={endDate}
           employer={employer}
           about={about}
+          university={university}
+          endSchool={endSchool}
+          select={select}
+          aboutEdu={aboutEdu}
         />
       </Box>
     </Container>

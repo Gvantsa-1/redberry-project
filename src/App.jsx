@@ -5,6 +5,7 @@ import { Personalinfo } from "./components/Personalinfo";
 import { Experience } from "./components/Experience";
 import { Information } from "./components/Information";
 import { Education } from "./components/Education";
+import { Success } from "./components/Success";
 import {
   BrowserRouter as Router,
   Route,
@@ -25,6 +26,10 @@ function App() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [about, setAbout] = useState("");
+  const [university, setUniversity] = useState("");
+  const [select, setSelect] = useState("");
+  const [endSchool, setEndDateSchool] = useState("");
+  const [aboutEdu, setAboutEdu] = useState("");
   return (
     <Container>
       <Routes>
@@ -110,6 +115,36 @@ function App() {
               setEndDate={setEndDate}
               about={about}
               setAbout={setAbout}
+              setAboutEdu={setAboutEdu}
+              aboutEdu={aboutEdu}
+              setEndDateSchool={setEndDateSchool}
+              endSchool={endSchool}
+              select={select}
+              setSelect={setSelect}
+              university={university}
+              setUniversity={setUniversity}
+            />
+          }
+        />
+        <Route
+          path="/success"
+          element={
+            <Success
+              image={image}
+              name={name}
+              text={text}
+              lastname={lastname}
+              mail={mail}
+              number={number}
+              position={position}
+              startDate={startDate}
+              endDate={endDate}
+              employer={employer}
+              about={about}
+              select={select}
+              endSchool={endSchool}
+              university={university}
+              aboutEdu={aboutEdu}
             />
           }
         />

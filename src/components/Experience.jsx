@@ -91,29 +91,6 @@ export const Experience = (props) => {
     setStartDate(storedStartDate || "");
     setEndDate(storedEndDate || "");
 
-    storedPosition.match(regex)
-      ? setValidPosition(true)
-      : setValidPosition(false);
-    storedEmployer.match(regex)
-      ? setValidEmployer(true)
-      : setValidEmployer(false);
-    storedStartDate !== "" ? setValidStart(true) : setValidStart(false);
-    storedEndDate !== "" ? setValidEnd(true) : setValidEnd(false);
-  }, []);
-
-  useEffect(() => {
-    const storedPosition = localStorage.getItem("position");
-    const storedEmployer = localStorage.getItem("employer");
-    const storedAbout = localStorage.getItem("about");
-    const storedStartDate = localStorage.getItem("startDate");
-    const storedEndDate = localStorage.getItem("endDate");
-
-    setPosition(storedPosition || "");
-    setEmployer(storedEmployer || "");
-    setAbout(storedAbout || "");
-    setStartDate(storedStartDate || "");
-    setEndDate(storedEndDate || "");
-
     setValidPosition(storedPosition.match(regex) !== null);
     setValidEmployer(storedEmployer.match(regex) !== null);
     setValidStart(storedStartDate !== "");
